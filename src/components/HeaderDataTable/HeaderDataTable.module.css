@@ -1,0 +1,35 @@
+.header__container {
+	background-color: #f8f9fa;
+	margin-bottom: 10px;
+	border: 1px solid #dee2e6;
+	border-radius: 5px;
+	padding: 10px;
+}
+.buttonsLeft__container {
+	display: flex;
+	gap: 10px;
+}
+
+.button {
+	font-size: 14px;
+	padding: 8px 10px;
+	border: none;
+	border-radius: 5px;
+
+	font-weight: 600;
+	color: #fff;
+	font-size: 13px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+
+	cursor: pointer;
+}
+.button__create {
+	background-color: #0296fc;
+}
+.button__export {
+	background-color: #08753F;
+}

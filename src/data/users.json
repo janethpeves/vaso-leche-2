@@ -1,0 +1,43 @@
+{
+	"users": [
+		{
+			"id": 1,
+			"correo": "jefe@gmail.com",
+			"password": "1234",
+			"name": "jefe",
+			"role": "jefe",
+			"lastname": "jefe",
+			"phone": "777777777",
+			"address": "av. villa maria",
+			"docNumber": "77777777",
+			"childrenAmount": "0",
+			"coordinadora": ""
+		},
+		{
+			"id": 2,
+			"correo": "coordinadora@gmail.com",
+			"password": "1234",
+			"name": "Janeth",
+			"role": "coordinadora",
+			"lastname": "Peves",
+			"phone": "999999999",
+			"address": "SJL",
+			"docNumber": "99999898",
+			"childrenAmount": "0",
+			"coordinadora": ""
+		},
+		{
+			"id": 3,
+			"correo": "madre@gmail.com",
+			"password": "1234",
+			"name": "victoria",
+			"role": "madre",
+			"lastname": "Rodriguez",
+			"phone": "888888888",
+			"address": "SJL",
+			"docNumber": "88888888",
+			"childrenAmount": "2",
+			"coordinadora": ""
+		}
+	]
+}

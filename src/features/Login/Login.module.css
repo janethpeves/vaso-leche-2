@@ -1,0 +1,45 @@
+.login__container {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  max-height: 80vh;
+}
+
+.form__section {
+  display: grid;
+  place-content: center;
+  gap: 20px;
+}
+.form__container {
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.logo__container {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--primary-color-app);
+  border-radius: 15px;
+  padding: 10px;
+}
+.logo__item {
+  width: 100%;
+}
+.form__container h2 {
+  text-align: center;
+  color: var(--primary-color-app);
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.from__text__recoveryPassword {
+  display: flex;
+  justify-content: flex-end;
+}

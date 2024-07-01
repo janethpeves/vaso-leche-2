@@ -1,0 +1,35 @@
+.loginHeader__container {
+	width: 100%;
+	height: 100px;
+
+	display: flex;
+
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 50px;
+
+	background-color: var(--primary-color-app);
+
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+	position: sticky;
+	top: 0;
+	z-index: 5;
+}
+
+.logo__container {
+	width: auto;
+	height: 90px;
+	cursor: pointer;
+}
+.logo__item {
+	width: 100%;
+	height: 100%;
+}
+
+/* more information */
+.loginHeader__information {
+	color: #fff;
+	font-weight: 600;
+	font-size: 18px;
+}

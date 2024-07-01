@@ -1,0 +1,23 @@
+.recojo__form {
+	padding: 10px 0;
+}
+.perfil__button {
+	width: 100%;
+	background-color: var(--primary-color-app);
+	color: #fff;
+	font-weight: 600;
+	padding: 30px;
+	border: none;
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
+.modal__button__confirm {
+	width: 100%;
+	background-color: var(--primary-color-app);
+	color: #fff;
+	font-weight: 600;
+	padding: 15px;
+	border: none;
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
