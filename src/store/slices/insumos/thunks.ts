@@ -1,15 +1,24 @@
 import { AppThunk } from "../../store";
 
-import { isLoading, setCurrentDistribucion, setRegistroDistribucion } from "./insumosSlice";
+import { isLoading, setCurrentDistribucion, setRegistroDistribucion, updateRegistroDistribucion } from "./insumosSlice";
 import { selectUsers } from "../auth/selectors";
-import { getCurrentDate } from "@/helpers/getCurrentDate";
+
 import { selectCurrentDistribucion, selectDistribucion } from "./selectors";
 
-export const crearDistribucion = (): AppThunk => {
+export const crearDistribucion = (payload: any): AppThunk => {
+	// payload devuelve la fecha con formato, ya desde la invocacion de la accion
 	return async (dispatch, getState) => {
 		try {
 			const users = selectUsers(getState());
-			let currentDate = getCurrentDate();
+			const distribucion = selectDistribucion(getState());
+
+			// Validamos si ya hay una distribucion en el día
+			let existeDistribucion = distribucion.find((item: any) => item.date == payload);
+			if (existeDistribucion) {
+				alert("Ya se realizo una distribución en el día indicado");
+				return;
+			}
+
 			let coordinadoras = users.filter((user: any) => user.role == "coordinadora");
 			let madres = users.filter((user: any) => user.role == "madre");
 
@@ -29,10 +38,11 @@ export const crearDistribucion = (): AppThunk => {
 					totalLeche: totalLeche,
 					totalCereal: totalCereal,
 					estado: "NO RECIBIDO",
+					date: payload,
 				};
 			});
 
-			let result = { date: currentDate, coordinadoras: [...fullDataCoordinadoras] };
+			let result = { date: payload, coordinadoras: [...fullDataCoordinadoras] };
 
 			dispatch(setRegistroDistribucion(result));
 		} catch (error) {
@@ -45,7 +55,6 @@ export const obtenerDistribucion = (payload: any): AppThunk => {
 	return async (dispatch, getState) => {
 		try {
 			const distribucionList = selectDistribucion(getState());
-			console.log(payload);
 
 			let result = distribucionList.find((distribucion: any) => distribucion.date == payload);
 
@@ -64,6 +73,7 @@ export const cambiarEstado = (payload: any): AppThunk => {
 	return async (dispatch, getState) => {
 		try {
 			const currentDistribucion = selectCurrentDistribucion(getState());
+			const registroDistribucion = selectDistribucion(getState());
 
 			if (!currentDistribucion || !currentDistribucion.coordinadoras) {
 				throw new Error("Distribución actual no encontrada o coordinadoras no definidas");
@@ -85,6 +95,16 @@ export const cambiarEstado = (payload: any): AppThunk => {
 			};
 
 			dispatch(setCurrentDistribucion(finalResult));
+
+			// Actualizar el registro general de distribuciones
+			const newRegistroDistribucion = registroDistribucion.map((distribucion: any) => {
+				if (distribucion.id === currentDistribucion.id) {
+					return finalResult;
+				}
+				return distribucion;
+			});
+
+			dispatch(updateRegistroDistribucion(newRegistroDistribucion));
 		} catch (error) {
 			console.log(error);
 		}

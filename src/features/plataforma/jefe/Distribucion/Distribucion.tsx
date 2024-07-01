@@ -19,8 +19,8 @@ export const Distribucion = () => {
 	const currentDistribucion = useAppSelector((state: any) => state.insumos.currentDistribucion);
 
 	const handleCreate = () => {
-		dispatch(crearDistribucion());
 		let currentDate = formatDate(dateFilter);
+		dispatch(crearDistribucion(currentDate));
 		dispatch(obtenerDistribucion(currentDate));
 	};
 

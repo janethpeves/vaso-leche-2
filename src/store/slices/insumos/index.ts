@@ -1,2 +1,2 @@
 export * from "./insumosSlice";
-// export * from "./thunks";
+export * from "./thunks";

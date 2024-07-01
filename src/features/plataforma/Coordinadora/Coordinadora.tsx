@@ -1,34 +1,62 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import { ContentStructure } from "@/components/ContentStructure/ContentStructure";
-
 import { DataTable } from "@/components/DataTable/DataTable";
-
 import { DateField } from "@/components/DateField/DateField";
-// import { handleChangeInput } from "@/helpers/handleTextBox";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { Button } from "primereact/button";
+import { formatDate } from "@/helpers/getCurrentDate";
+import { cambiarEstado, crearReparto, obtenerReparto } from "@/store/slices/madreInsumos/thunks";
 
 export const Coordinadora = () => {
+	const dispatch = useAppDispatch();
+	const [dateFilter, setDateFilter] = useState<any>(new Date());
+	const auth = useAppSelector((state: any) => state.auth.login);
+	const currentReparto = useAppSelector((state: any) => state.madreInsumos.currentRepartoInsumos);
+
+	const handleCreate = () => {
+		let currentDate = formatDate(dateFilter);
+		dispatch(crearReparto(currentDate, auth?.id));
+		dispatch(obtenerReparto(currentDate));
+	};
+
+	useEffect(() => {
+		if (dateFilter) {
+			let currentDate = formatDate(dateFilter);
+			dispatch(obtenerReparto(currentDate));
+		}
+	}, [dateFilter]);
+
+	const handleChangeStatus = (rowData: any) => {
+		dispatch(cambiarEstado(rowData.id));
+	};
+
 	return (
 		<>
 			<ContentStructure>
-				<h3>Coordinadora</h3>
+				<h3>Reparto de insumos - Coordinadora</h3>
 				<hr />
 				<br />
 				<h2>Lista de madres de familia</h2>
 				<br />
 				<div style={{ width: "500px" }}>
-					<DateField textLabel="Fecha:" />
+					<DateField
+						textLabel="Fecha:"
+						value={dateFilter}
+						onChange={(e: any) => setDateFilter(e.target.value)}
+					/>
+				</div>
+
+				<br />
+				<div>
+					<Button onClick={handleCreate}>Nuevo reparto</Button>
 				</div>
 
 				<br />
 				<DataTable
 					columns={columns}
-					// data={getFetchData?.data || []}
-					data={data}
+					data={currentReparto?.madres || []}
 					isHeaderActive={false}
-					onUpdate={() => {}}
-					// onDelete={onDeleteRow}
-					dataKey={"condcitacod"}
+					onUpdate={handleChangeStatus}
 				/>
 			</ContentStructure>
 		</>
@@ -36,58 +64,10 @@ export const Coordinadora = () => {
 };
 
 const columns = [
-	{ nombre: "DNI", campo: "id" },
+	{ nombre: "DNI", campo: "docNumber" },
 	{ nombre: "Nombre", campo: "name" },
-	{ nombre: "Apellido Materno", campo: "lastname" },
-	{ nombre: "Apellido Paterno", campo: "secondlastname" },
-	{ nombre: "Cant. Leche", campo: "cantleche" },
-	{ nombre: "Cant. Cereal", campo: "cantcereal" },
-	{
-		nombre: "Estado",
-		body: (rowData: any) => {
-			return <p>{rowData.estado == "1" ? "Recibido" : "No recibido"}</p>;
-		},
-	},
-	{ nombre: "Obs", campo: "observacion" },
+	{ nombre: "Apellidos", campo: "lastname" },
+	{ nombre: "Cant. Leche", campo: "totalLeche" },
+	{ nombre: "Cant. Cereal", campo: "totalCereal" },
+	{ nombre: "Estado", campo: "estado" },
 ];
-
-const data = [
-	{
-		id: 11111111,
-		name: "Victoria",
-		lastname: "Rodriguez",
-		secondlastname: "Dominguez",
-		cantleche: "3",
-		cantcereal: "1",
-		estado: false,
-		obs: "",
-	},
-	{
-		id: 11111112,
-		name: "Janeth",
-		lastname: "Peves",
-		secondlastname: "Ramirez",
-		cantleche: "3",
-		cantcereal: "1",
-		estado: true,
-		obs: "",
-	},
-];
-
-// const currentCollection = {
-//   pendiente: false,
-//   date: "20-05-24",
-//   collection: {
-//     leche: 0,
-//     cereal: 0,
-//   }
-// }
-
-// const currentCollection = {
-//   pendiente: true,
-//   date: "20-05-24",
-//   collection: {
-//     leche: 3,
-//     cereal: 1,
-//   }
-// }

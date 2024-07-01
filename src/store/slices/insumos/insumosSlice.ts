@@ -33,12 +33,19 @@ export const insumosSlice = createSlice({
 				{ id: state.registroDistribucion.length + 1, ...action.payload },
 			];
 		},
-
+		updateRegistroDistribucion: (state, action) => {
+			state.registroDistribucion = action.payload;
+		},
 		setCurrentDistribucion: (state, action) => {
 			state.currentDistribucion = action.payload;
 		},
 	},
 });
 
-export const { isLoading, addInsumosGenerales, setRegistroDistribucion, setCurrentDistribucion } =
-	insumosSlice.actions;
+export const {
+	isLoading,
+	addInsumosGenerales,
+	setRegistroDistribucion,
+	setCurrentDistribucion,
+	updateRegistroDistribucion,
+} = insumosSlice.actions;

@@ -1,20 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./RecojoLeche.module.css";
 import { ContentStructure } from "@/components/ContentStructure/ContentStructure";
 import { TextBoxField } from "@/components/TextBoxField/TextBoxField";
 import { DataTable } from "@/components/DataTable/DataTable";
 import { useModal } from "@/hooks/useModal";
 import { PrimeModal } from "@/primeComponents/PrimeModal/PrimeModal";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { obtenerHistorialMadre } from "@/store/slices/madreInsumos/thunks";
 // import { handleChangeInput } from "@/helpers/handleTextBox";
 
 export const RecojoLeche = () => {
 	const recibirModal = useModal();
+	const dispatch = useAppDispatch();
+	const auth = useAppSelector((state: any) => state.auth.login);
+	const historialRecojo = useAppSelector((state) => state.madreInsumos.historialMadre);
+
+	useEffect(() => {
+		dispatch(obtenerHistorialMadre(auth?.id));
+	}, []);
+
 	return (
 		<>
 			<ContentStructure>
 				<h3>Recojo de leche</h3>
 				<hr />
-				<br />
+				{/* <br />
 				<h2>Tus recojo semanal</h2>
 
 				<div className={style.recojo__form}>
@@ -23,20 +33,15 @@ export const RecojoLeche = () => {
 					</button>
 				</div>
 
-				<hr />
+				<hr /> */}
 				<br />
 				<h2>Tus historial de recojo</h2>
 				<br />
 				<DataTable
 					columns={columns}
 					// data={getFetchData?.data || []}
-					data={data}
+					data={historialRecojo || []}
 					isHeaderActive={false}
-					// onCreate={addModal.onVisibleModal}
-					// onExport={onPostExcel}
-					// onUpdate={onUpdateRow}
-					// onDelete={onDeleteRow}
-					dataKey={"condcitacod"}
 				/>
 			</ContentStructure>
 
@@ -47,7 +52,15 @@ export const RecojoLeche = () => {
 				onHideModal={recibirModal.onHideModal}
 				width={650}
 			>
-				<div style={{ marginBottom: "20px", display: "flex", gap: "20px", textAlign: "center", justifyContent: "center" }}>
+				<div
+					style={{
+						marginBottom: "20px",
+						display: "flex",
+						gap: "20px",
+						textAlign: "center",
+						justifyContent: "center",
+					}}
+				>
 					<p>
 						<b>Cantidad de leche:</b> 3
 					</p>
@@ -76,53 +89,8 @@ export const RecojoLeche = () => {
 };
 
 const columns = [
-	{ nombre: "Cód.", campo: "id" },
-	{ nombre: "Fecha", campo: "fecha" },
-	{ nombre: "Hora", campo: "hora" },
-	{ nombre: "Cant. Leche", campo: "cantleche" },
-	{ nombre: "Cant. Cereal", campo: "cantcereal" },
-	{
-		nombre: "Estado",
-		body: (rowData: any) => {
-			return <p>{rowData.estado == "1" ? "Recibido" : "No recibido"}</p>;
-		},
-	},
-	{ nombre: "Obs", campo: "observacion" },
+	{ nombre: "Fecha", campo: "date" },
+	{ nombre: "Cant. Leche", campo: "totalLeche" },
+	{ nombre: "Cant. Cereal", campo: "totalCereal" },
+	{ nombre: "Estado", campo: "estado" },
 ];
-
-const data = [
-	{
-		id: 2,
-		fecha: "24-05-24",
-		hora: "10:30",
-		cantleche: "3",
-		cantcereal: "1",
-		estado: false,
-		obs: "",
-	},
-	{
-		id: 1,
-		fecha: "14-05-24",
-		hora: "16:30",
-		cantleche: "3",
-		cantcereal: "1",
-		estado: true,
-		obs: "",
-	},
-];
-
-// const currentCollection = {
-//   active: false,
-//   collection: {
-//     leche: 0,
-//     cereal: 0,
-//   }
-// }
-
-// const currentCollection = {
-//   active: true,
-//   collection: {
-//     leche: 3,
-//     cereal: 1,
-//   }
-// }

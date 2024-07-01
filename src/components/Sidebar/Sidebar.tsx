@@ -11,7 +11,6 @@ import { logoutUser } from "@/store/slices/auth";
 export const Sidebar = ({ role }: any) => {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-	console.log(role);
 
 	const logout = () => {
 		dispatch(logoutUser());
@@ -24,7 +23,7 @@ export const Sidebar = ({ role }: any) => {
 
 			{role === "jefe" && (
 				<ul className={style.sidebar__nav}>
-					<li className={style.sidebar__item} onClick={() => navigate("#")}>
+					<li className={style.sidebar__item} onClick={() => navigate("/plataforma/dashboard/jefe")}>
 						<GoHomeFill />
 						DASHBOARD
 					</li>
@@ -45,7 +44,7 @@ export const Sidebar = ({ role }: any) => {
 
 			{role === "coordinadora" && (
 				<ul className={style.sidebar__nav}>
-					<li className={style.sidebar__item} onClick={() => navigate("#")}>
+					<li className={style.sidebar__item} onClick={() => navigate("/plataforma/dashboard/coordinadora")}>
 						<GoHomeFill />
 						DASHBOARD
 					</li>
@@ -66,10 +65,7 @@ export const Sidebar = ({ role }: any) => {
 
 			{role === "madre" && (
 				<ul className={style.sidebar__nav}>
-					<li className={style.sidebar__item} onClick={() => navigate("#")}>
-						<GoHomeFill />
-						DASHBOARD
-					</li>
+		
 					<li className={style.sidebar__item} onClick={() => navigate("/plataforma/recojo-leche")}>
 						<FaTable />
 						RECOJO DE LECHE

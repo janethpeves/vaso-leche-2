@@ -17,7 +17,7 @@
 		"jsx": "react",
 
 		// Path
-		"types": ["node"],
+		// "types": ["node"],
 		"paths": {
 			"@/*": ["./src/*"]
 		}

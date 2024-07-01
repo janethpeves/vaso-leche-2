@@ -4,7 +4,7 @@ import { AppRoutes } from "./routes/AppRoutes";
 
 import { addLocale, locale } from "primereact/api";
 import { useAppDispatch } from "./store/hooks";
-import { refreshToken, isLoading } from "@/store/slices/auth";
+import { isLoading } from "@/store/slices/auth";
 
 export const App = () => {
 	addLocale("es", {
