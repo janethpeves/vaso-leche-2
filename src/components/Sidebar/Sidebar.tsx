@@ -7,6 +7,7 @@ import { MdPerson } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import { logoutUser } from "@/store/slices/auth";
+import Logo from "@/assets/PVL.png";
 
 export const Sidebar = ({ role }: any) => {
 	const navigate = useNavigate();
@@ -17,13 +18,19 @@ export const Sidebar = ({ role }: any) => {
 	};
 	return (
 		<div className={style.sidebar__container}>
-			<div>
+			{/* <div>
 				<h1 className={style.sidebar__title}>VASO DE LECHE</h1>
+			</div> */}
+			<div className={style.logo__container}>
+				<img className={style.logo__item} src={Logo} alt="logo" />
 			</div>
 
 			{role === "jefe" && (
 				<ul className={style.sidebar__nav}>
-					<li className={style.sidebar__item} onClick={() => navigate("/plataforma/dashboard/jefe")}>
+					<li
+						className={style.sidebar__item}
+						onClick={() => navigate("/plataforma/dashboard/jefe")}
+					>
 						<GoHomeFill />
 						DASHBOARD
 					</li>
@@ -44,7 +51,10 @@ export const Sidebar = ({ role }: any) => {
 
 			{role === "coordinadora" && (
 				<ul className={style.sidebar__nav}>
-					<li className={style.sidebar__item} onClick={() => navigate("/plataforma/dashboard/coordinadora")}>
+					<li
+						className={style.sidebar__item}
+						onClick={() => navigate("/plataforma/dashboard/coordinadora")}
+					>
 						<GoHomeFill />
 						DASHBOARD
 					</li>
@@ -65,7 +75,6 @@ export const Sidebar = ({ role }: any) => {
 
 			{role === "madre" && (
 				<ul className={style.sidebar__nav}>
-		
 					<li className={style.sidebar__item} onClick={() => navigate("/plataforma/recojo-leche")}>
 						<FaTable />
 						RECOJO DE LECHE

@@ -9,6 +9,21 @@
 	padding: 50px;
 }
 
+.logo__container {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--primary-color-app);
+  border-radius: 15px;
+  padding: 10px;
+}
+.logo__item {
+  width: 100%;
+}
+
 .sidebar__title {
 	color: #fff;
 	font-weight: bold;
