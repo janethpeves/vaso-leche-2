@@ -12,10 +12,15 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import "primereact/resources/primereact.min.css";
 
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor } from "./store";
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	// <React.StrictMode>
 	<Provider store={store}>
-		<App />
+		<PersistGate loading={null} persistor={persistor}>
+			<App />
+		</PersistGate>
 	</Provider>
 	// </React.StrictMode>
 );

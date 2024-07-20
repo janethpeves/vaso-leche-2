@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./RecojoLeche.module.css";
 import { ContentStructure } from "@/components/ContentStructure/ContentStructure";
 import { TextBoxField } from "@/components/TextBoxField/TextBoxField";
@@ -6,7 +6,7 @@ import { DataTable } from "@/components/DataTable/DataTable";
 import { useModal } from "@/hooks/useModal";
 import { PrimeModal } from "@/primeComponents/PrimeModal/PrimeModal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { obtenerHistorialMadre } from "@/store/slices/madreInsumos/thunks";
+import { completarRecibido, obtenerHistorialMadre } from "@/store/slices/madreInsumos/thunks";
 // import { handleChangeInput } from "@/helpers/handleTextBox";
 
 export const RecojoLeche = () => {
@@ -15,16 +15,29 @@ export const RecojoLeche = () => {
 	const auth = useAppSelector((state: any) => state.auth.login);
 	const historialRecojo = useAppSelector((state) => state.madreInsumos.historialMadre);
 
+	const [count, setCount] = useState(0);
+
 	useEffect(() => {
 		dispatch(obtenerHistorialMadre(auth?.id));
 	}, []);
+
+	useEffect(() => {
+		if (historialRecojo) {
+			setCount(historialRecojo.length || null);
+		}
+	}, [historialRecojo]);
+
+	const aceptarRecojo = () => {
+		dispatch(completarRecibido(auth?.id));
+		recibirModal.onHideModal();
+	};
 
 	return (
 		<>
 			<ContentStructure>
 				<h3>Recojo de leche</h3>
 				<hr />
-				{/* <br />
+				<br />
 				<h2>Tus recojo semanal</h2>
 
 				<div className={style.recojo__form}>
@@ -33,7 +46,7 @@ export const RecojoLeche = () => {
 					</button>
 				</div>
 
-				<hr /> */}
+				<hr />
 				<br />
 				<h2>Tus historial de recojo</h2>
 				<br />
@@ -62,17 +75,14 @@ export const RecojoLeche = () => {
 					}}
 				>
 					<p>
-						<b>Cantidad de leche:</b> 3
+						<b>Cantidad de leche:</b> {historialRecojo[count - 1]?.totalLeche}
 					</p>
 					<p>
-						<b>Cantidad de cereal:</b> 1
+						<b>Cantidad de cereal:</b> {historialRecojo[count - 1]?.totalCereal}
 					</p>
 				</div>
 				<div style={{ display: "flex", gap: "20px" }}>
-					<button
-						className={style.modal__button__confirm}
-						onClick={() => recibirModal.onHideModal()}
-					>
+					<button className={style.modal__button__confirm} onClick={aceptarRecojo}>
 						SI
 					</button>
 					<button

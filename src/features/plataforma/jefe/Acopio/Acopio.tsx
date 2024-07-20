@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import style from "./Acopio.module.css";
+
 import { ContentStructure } from "@/components/ContentStructure/ContentStructure";
 import { TextBoxField } from "@/components/TextBoxField/TextBoxField";
 import { DataTable } from "@/components/DataTable/DataTable";
 import { useModal } from "@/hooks/useModal";
 import { PrimeModal } from "@/primeComponents/PrimeModal/PrimeModal";
-import { DateField } from "@/components/DateField/DateField";
 import { Button } from "primereact/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { handleChangeInput } from "@/helpers/handleTextBox";
@@ -29,7 +28,8 @@ export const Acopio = () => {
 		administrarModal.onHideModal();
 		// Limpiando el estado
 		setNuevosInsumos({
-			fecha: "",
+			// fecha: "",
+			fecha: getCurrentDate(),
 			cantidadLeche: "",
 			cantidadCereal: "",
 			cantidadBeneficiarios: "",

@@ -71,6 +71,48 @@ export const cambiarEstado = (payload: any): AppThunk => {
 				if (madre.id === payload) {
 					return {
 						...madre,
+						estado: "PENDIENTE",
+					};
+				}
+				return madre;
+			});
+
+			const finalResult = {
+				...currentReparto,
+				madres: updatedMadres,
+			};
+
+			dispatch(setCurrentRepartoInsumos(finalResult));
+
+			// Actualizar el registro general de distribuciones
+			const newRegistroDistribucion = repartoList.map((reparto: any) => {
+				if (reparto.id === currentReparto.id) {
+					return finalResult;
+				}
+				return reparto;
+			});
+
+			dispatch(updateRepartoInsumos(newRegistroDistribucion));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+};
+
+export const completarRecibido = (payload: any): AppThunk => {
+	return async (dispatch, getState) => {
+		try {
+			const currentReparto = selectCurrentRepartos(getState());
+			const repartoList = selectRepartos(getState());
+
+			if (!currentReparto || !currentReparto.madres) {
+				throw new Error("Distribución actual no encontrada o coordinadoras no definidas");
+			}
+
+			const updatedMadres = currentReparto.madres.map((madre: any) => {
+				if (madre.id === payload) {
+					return {
+						...madre,
 						estado: "RECIBIDO",
 					};
 				}
@@ -93,6 +135,7 @@ export const cambiarEstado = (payload: any): AppThunk => {
 			});
 
 			dispatch(updateRepartoInsumos(newRegistroDistribucion));
+			dispatch(obtenerHistorialMadre(payload));
 		} catch (error) {
 			console.log(error);
 		}
