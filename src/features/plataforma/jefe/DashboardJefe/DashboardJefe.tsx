@@ -1,20 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import styles from "./DashboardJefe.module.css";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { dataJefeDashboard } from "@/store/slices/insumos";
 
 // Registrar todos los componentes de Chart.js
 Chart.register(...registerables);
 
 export const DashboardJefe: React.FC = () => {
+	const dispatch = useAppDispatch();
+	const insumos = useAppSelector((state) => state.insumos);
+	const usuarios = useAppSelector((state) => state.auth.users);
+
+	let [dataDashboard, setDataDashboard] = useState({
+		insumosTotales: 0,
+		insumosDistribuidos: 0,
+		coordinadoras: [],
+	});
+
 	const data = {
-		labels: [
-			"Coordinadora 1",
-			"Coordinadora 2",
-			"Coordinadora 3",
-			"Coordinadora 4",
-			"Coordinadora 5",
-		],
+		labels: ["Insumo", "Insumo", "Insumo", "Insumo", "Insumo"],
 		datasets: [
 			{
 				label: "Insumos Distribuidos",
@@ -34,6 +40,38 @@ export const DashboardJefe: React.FC = () => {
 		},
 	};
 
+	useEffect(() => {
+		if (insumos) {
+			const totalInsumos = insumos?.insumosGenerales?.reduce(
+				(acc: any, item: any) => {
+					acc.cantidadCereal += parseInt(item.cantidadCereal);
+					acc.cantidadLeche += parseInt(item.cantidadLeche);
+					return acc;
+				},
+				{ cantidadCereal: 0, cantidadLeche: 0 }
+			);
+
+			const insumosDistribuidos = insumos?.registroDistribucion?.reduce(
+				(acc: any, registro: any) => {
+					registro.coordinadoras.forEach((coordinadora: any) => {
+						acc.totalLeche += coordinadora.totalLeche;
+						acc.totalCereal += coordinadora.totalCereal;
+					});
+					return acc;
+				},
+				{ totalLeche: 0, totalCereal: 0 }
+			);
+
+			const coordinadoras = usuarios?.filter((user: any) => user.role === "coordinadora");
+
+			setDataDashboard({
+				insumosTotales: totalInsumos?.cantidadCereal + totalInsumos?.cantidadLeche,
+				insumosDistribuidos: insumosDistribuidos?.totalCereal + insumosDistribuidos?.totalLeche,
+				coordinadoras: coordinadoras || [],
+			});
+		}
+	}, [insumos]);
+
 	return (
 		<div className={styles.dashboard}>
 			<header className={styles.header}>
@@ -43,15 +81,15 @@ export const DashboardJefe: React.FC = () => {
 				<section className={styles.stats}>
 					<h2>Estadísticas</h2>
 					<div className={styles.statBox}>
-						<span className={styles.statNumber}>150</span>
+						<span className={styles.statNumber}>{dataDashboard?.insumosTotales}</span>
 						<span className={styles.statLabel}>Insumos Totales</span>
 					</div>
 					<div className={styles.statBox}>
-						<span className={styles.statNumber}>75</span>
+						<span className={styles.statNumber}>{dataDashboard?.insumosDistribuidos}</span>
 						<span className={styles.statLabel}>Insumos Distribuidos</span>
 					</div>
 					<div className={styles.statBox}>
-						<span className={styles.statNumber}>5</span>
+						<span className={styles.statNumber}>{dataDashboard?.coordinadoras?.length}</span>
 						<span className={styles.statLabel}>Coordinadoras</span>
 					</div>
 				</section>
@@ -65,11 +103,10 @@ export const DashboardJefe: React.FC = () => {
 					<section className={styles.coordinators}>
 						<h2>Lista de Coordinadoras</h2>
 						<ul className={styles.coordinatorList}>
-							<li className={styles.coordinatorItem}>Coordinadora 1</li>
-							<li className={styles.coordinatorItem}>Coordinadora 2</li>
-							<li className={styles.coordinatorItem}>Coordinadora 3</li>
-							<li className={styles.coordinatorItem}>Coordinadora 4</li>
-							<li className={styles.coordinatorItem}>Coordinadora 5</li>
+							{dataDashboard?.coordinadoras &&
+								dataDashboard?.coordinadoras.map((coordinadora: any) => (
+									<li className={styles.coordinatorItem}>{coordinadora.name}</li>
+								))}
 						</ul>
 					</section>
 				</div>

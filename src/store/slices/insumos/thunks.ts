@@ -1,6 +1,11 @@
 import { AppThunk } from "../../store";
 
-import { isLoading, setCurrentDistribucion, setRegistroDistribucion, updateRegistroDistribucion } from "./insumosSlice";
+import {
+	isLoading,
+	setCurrentDistribucion,
+	setRegistroDistribucion,
+	updateRegistroDistribucion,
+} from "./insumosSlice";
 import { selectUsers } from "../auth/selectors";
 
 import { selectCurrentDistribucion, selectDistribucion } from "./selectors";
@@ -55,7 +60,6 @@ export const obtenerDistribucion = (payload: any): AppThunk => {
 	return async (dispatch, getState) => {
 		try {
 			const distribucionList = selectDistribucion(getState());
-
 			let result = distribucionList.find((distribucion: any) => distribucion.date == payload);
 
 			if (result) {
@@ -105,6 +109,19 @@ export const cambiarEstado = (payload: any): AppThunk => {
 			});
 
 			dispatch(updateRegistroDistribucion(newRegistroDistribucion));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+};
+
+export const dataJefeDashboard = (): AppThunk => {
+	return async (dispatch, getState) => {
+		try {
+			const registroDistribucion = selectDistribucion(getState());
+
+			console.log(registroDistribucion);
+			// dispatch(setCurrentDistribucion(finalResult));
 		} catch (error) {
 			console.log(error);
 		}

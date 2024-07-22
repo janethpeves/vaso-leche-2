@@ -7,13 +7,14 @@ import {
 	setRepartoInsumos,
 	updateRepartoInsumos,
 } from "./madreInsumosSlice";
-import { selectCurrentRepartos, selectRepartos } from "./selectors";
+import { selectAuth, selectCurrentRepartos, selectRepartos } from "./selectors";
 
 export const crearReparto = (payload: any, id: any): AppThunk => {
 	// payload devuelve la fecha con formato, ya desde la invocacion de la accion
 	return async (dispatch, getState) => {
 		try {
 			const users = selectUsers(getState());
+			const auth: any = selectAuth(getState());
 
 			let madres = users.filter((user: any) => user.role == "madre" && user.coordinadora == id);
 
@@ -29,6 +30,7 @@ export const crearReparto = (payload: any, id: any): AppThunk => {
 
 			let result = {
 				date: payload,
+				coordinadora: auth?.id,
 				madres: [...fullDataMadre],
 			};
 
@@ -43,8 +45,12 @@ export const obtenerReparto = (payload: any): AppThunk => {
 	return async (dispatch, getState) => {
 		try {
 			const repartoList = selectRepartos(getState());
+			const auth: any = selectAuth(getState());
 
-			let result = repartoList.find((distribucion: any) => distribucion.date == payload);
+			let result = repartoList.find(
+				(distribucion: any) => distribucion.date == payload && distribucion.coordinadora == auth.id
+			);
+			console.log(result);
 
 			if (result) {
 				dispatch(setCurrentRepartoInsumos(result));

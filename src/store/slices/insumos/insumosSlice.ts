@@ -5,6 +5,8 @@ export interface InsumosState {
 	insumosGenerales: any;
 	registroDistribucion: any;
 	currentDistribucion: any;
+	dashboardJefe: any;
+	dashboardCoordinadora: any;
 }
 
 const initialState: InsumosState = {
@@ -12,6 +14,8 @@ const initialState: InsumosState = {
 	insumosGenerales: [],
 	registroDistribucion: [],
 	currentDistribucion: {},
+	dashboardJefe: {},
+	dashboardCoordinadora: {},
 };
 
 export const insumosSlice = createSlice({
@@ -39,6 +43,12 @@ export const insumosSlice = createSlice({
 		setCurrentDistribucion: (state, action) => {
 			state.currentDistribucion = action.payload;
 		},
+		setDashboardJefe: (state, action) => {
+			state.dashboardJefe = action.payload;
+		},
+		setDashboardCoordinadora: (state, action) => {
+			state.dashboardCoordinadora = action.payload;
+		},
 	},
 });
 
@@ -48,4 +58,6 @@ export const {
 	setRegistroDistribucion,
 	setCurrentDistribucion,
 	updateRegistroDistribucion,
+	setDashboardJefe,
+	setDashboardCoordinadora,
 } = insumosSlice.actions;
